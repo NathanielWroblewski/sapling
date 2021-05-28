@@ -50,3 +50,4 @@ export const TWIRL = 10
 export const Δt = 0.05
 
 export const OPACITY_THRESHOLD = 0.05
+export const FPS = 60

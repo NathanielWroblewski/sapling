@@ -10,7 +10,7 @@ import { COLORS, LEAF, TILE, BACKGROUND } from './constants/colors.js'
 import {
   BLUR, ZOOM, ITERATIONS, SCALE, AXIOM, DISTANCE, ANGLE, AMPLITUDE,
   FREQUENCY, CUBE_FACES, MAX_FALLEN, FALLEN_CHANCE, ΔOPACITY, GRAVITY, WIND,
-  TWIRL, Δt, OPACITY_THRESHOLD
+  TWIRL, Δt, OPACITY_THRESHOLD, FPS
 } from './constants/dimensions.js'
 import {
   RULES, FORWARD, FORWARD_NO_LINE, TURN_LEFT, TURN_RIGHT, PITCH_UP, PITCH_DOWN,
@@ -229,7 +229,7 @@ let Δθ = 0.2
 
 let fallen = []
 
-const step = () => {
+const render = () => {
   if (θtotal > 180) {
     θtotal = 180
     Δθ = -Δθ
@@ -292,11 +292,22 @@ const step = () => {
   })
 
   time += Δt
-  window.requestAnimationFrame(step)
 }
 
 context.shadowBlur = BLUR
 
 seed(Math.random())
+
+let prevTick = 0
+
+const step = () => {
+  window.requestAnimationFrame(step)
+
+  const now = Math.round(FPS * Date.now() / 1000)
+  if (now === prevTick) return
+  prevTick = now
+
+  render()
+}
 
 step()
